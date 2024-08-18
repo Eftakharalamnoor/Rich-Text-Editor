@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text Selection Example with Bold Option</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div class="bg-slate-500 w-full h-screen flex justify-center items-center">
+      <div class="w-[50%] h-[50%] bg-slate-50 p-3">
+        <div class="border border-b-2 border-red-600 p-2 w-full">
+            <img id="boldButton" src="bold.svg" alt="bold" />
+        </div>
+        <div class="h-[80%] border mt-2 border-black outline-none pt-2 overflow-auto">
+            <div contenteditable="true" class="w-[100%] outline-none h-full "></div>
+        </div>
+      </div>
+    </div>
+    <p class="text">
+      <b>Select</b> some text in this paragraph and click the "Bold" button to
+      make the selected text bold.
+    </p>
+    <p>
+      You can select text from multiple paragraphs, and the script will apply
+      bold formatting to it.
+    </p>
+
+    <button id="boldButton">Bold</button>
+
+    <script>
+      document.getElementById("boldButton").addEventListener("click", () => {
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0);
+          const selectedText = range.toString();
+
+          // Log the selected text before formatting
+          console.log("range", range);
+          console.log("Selected text before:", selectedText);
+
+          if (selectedText.length > 0) {
+            // Create a bold element
+            const boldElement = document.createElement("b");
+            console.log(boldElement, "boldElement");
+            boldElement.textContent = selectedText;
+
+            // Replace the selected text with the bold element
+            range.deleteContents();
+            range.insertNode(boldElement);
+
+            // Clear the selection
+            selection.removeAllRanges();
+
+            // Log the text content of the parent element after formatting
+            const parent = boldElement.parentNode;
+            console.log("Text content after formatting:", parent.innerHTML);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
